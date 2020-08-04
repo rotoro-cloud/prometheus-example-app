@@ -26,7 +26,9 @@ var (
 	histogram = promauto.With(reg).NewHistogram(prometheus.HistogramOpts{
 		Name:    "random_numbers",
 		Help:    "A histogram of normally distributed random numbers.",
-		Buckets: prometheus.LinearBuckets(-3, .1, 61),
+		// TODO: support negative bounds
+		// Buckets: prometheus.LinearBuckets(-3, .1, 61),
+		Buckets: prometheus.LinearBuckets(0, .1, 61),
 	})
 )
 
@@ -34,6 +36,7 @@ var (
 func Random() {
 	logger.Sugar().Info("Started number generator")
 	for {
+
 		histogram.Observe(rand.NormFloat64())
 	}
 }
