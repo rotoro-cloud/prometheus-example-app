@@ -52,7 +52,7 @@ func PollItself() {
 			if err != nil {
 				logger.Sugar().Errorf("Failed to read response: %w", err)
 			} else {
-				logger.Sugar().Infof("Response: %s", string(body))
+				logger.Sugar().Debugf("Response: %s", string(body))
 				_ = resp.Body.Close()
 			}
 		}
