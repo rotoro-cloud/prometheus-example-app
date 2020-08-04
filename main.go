@@ -32,6 +32,7 @@ var (
 
 // Generates random data for a histogram
 func Random() {
+	logger.Sugar().Info("Started number generator")
 	for {
 		histogram.Observe(rand.NormFloat64())
 	}
@@ -52,7 +53,7 @@ func PollItself() {
 				_ = resp.Body.Close()
 			}
 		}
-		time.Sleep(time.Second * time.Duration(rand.Intn(10)))
+		time.Sleep(time.Second * time.Duration(rand.Intn(3)))
 	}
 }
 
@@ -64,6 +65,12 @@ func main() {
 	http.Handle("/", promhttp.InstrumentHandlerCounter(
 		requestCount,
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			random := rand.Intn(100)
+			if (random < 20) {
+				w.WriteHeader(500)
+				_, _ = fmt.Fprint(w, "Something went wrong :(")
+				return
+			}
 			_, _ = fmt.Fprint(w, "Hello, world!")
 		}),
 	))
