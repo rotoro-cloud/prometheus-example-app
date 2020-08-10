@@ -18,13 +18,13 @@ var (
 	reg          = prometheus.NewRegistry()
 	requestCount = promauto.With(reg).NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "http_requests_total",
+			Name: "example_requests_total",
 			Help: "Total number of HTTP requests by status code and method.",
 		},
 		[]string{"code", "method"},
 	)
 	histogram = promauto.With(reg).NewHistogram(prometheus.HistogramOpts{
-		Name:    "random_numbers",
+		Name:    "example_random_numbers",
 		Help:    "A histogram of normally distributed random numbers.",
 		// TODO: support negative bounds
 		// Buckets: prometheus.LinearBuckets(-3, .1, 61),
@@ -36,8 +36,11 @@ var (
 func Random() {
 	logger.Sugar().Info("Started number generator")
 	for {
-
-		histogram.Observe(rand.NormFloat64())
+		val := rand.NormFloat64()
+		if val < 0 {
+			val = -val
+		}
+		histogram.Observe(val)
 	}
 }
 
