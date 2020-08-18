@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
@@ -63,7 +64,23 @@ func PollItself() {
 	}
 }
 
+func parseFlags() {
+	enableProcessMetrics := flag.Bool("process-metrics", false, "Enables process metrics")
+	enableGoMetrics := flag.Bool("go-metrics", false, "Enables Go metrics")
+
+	flag.Parse()
+
+	if *enableProcessMetrics {
+		reg.MustRegister(prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
+	}
+
+	if *enableGoMetrics {
+		reg.MustRegister(prometheus.NewGoCollector())
+	}
+}
+
 func main() {
+	parseFlags()
 	go Random()
 	go PollItself()
 
