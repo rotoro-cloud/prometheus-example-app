@@ -1,4 +1,4 @@
-DOCKER_IMAGE=nilebox/prometheus-example-app
+DOCKER_IMAGE=rotorocloud/prometheus-example-app
 
 .PHONY: docker-build
 docker-build:
