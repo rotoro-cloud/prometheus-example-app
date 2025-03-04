@@ -1,4 +1,4 @@
-module github.com/nilebox/prometheus-example-app
+module github.com/rotoro-cloud/prometheus-example-app
 
 go 1.15
 
