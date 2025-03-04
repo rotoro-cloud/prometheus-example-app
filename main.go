@@ -48,7 +48,7 @@ func Random() {
 // PollItself polls the HTTP endpoint to generate synthetic "traffic"
 func PollItself() {
 	for {
-		resp, err := http.Get("http://localhost:1234/")
+		resp, err := http.Get("http://localhost:80/")
 		if err != nil {
 			logger.Sugar().Errorf("HTTP request failed: %w", err)
 		} else {
@@ -101,7 +101,7 @@ func main() {
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{}))
 
 	logger.Info("Starting HTTP server")
-	err := http.ListenAndServe(":1234", nil)
+	err := http.ListenAndServe(":80", nil)
 
 	if err != nil {
 		logger.Sugar().Errorf("ListenAndServe failed: %w", err)
